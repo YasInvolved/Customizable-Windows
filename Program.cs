@@ -12,7 +12,7 @@ namespace Customizable_Windows
 {
     public class Constants
     {
-        public static readonly string UUPDUMP_API = "https://api.uupdump.net/"; // uupdump json api
+        public static readonly string UUPDUMP_JSONAPI = "https://api.uupdump.net"; // uupdump json api
         public static readonly List<UUP.Version> VERSIONS_11 = new List<UUP.Version>
         {
             new UUP.Version("23H2", "e93eb708-98ec-494c-b4fc-025c6b012173"),
@@ -33,13 +33,20 @@ namespace Customizable_Windows
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Welcome to Customizable Windows v1.0 alpha");
-            Thread.Sleep(1000);
+            Console.WriteLine(TextUtils.Format("Welcome to Windows Customizer v1.0a", TextColor.WHITE, TextColor.BLACK, TextFormat.BOLD, TextFormat.UNDERLINE));
+            Thread.Sleep(3000);
             Console.Clear();
 
             Form<UUP.Version> versionForm = new Form<UUP.Version>("Please choose desired version (it's recommended to pick the latest one)", Constants.VERSIONS_11);
             UUP.Version selectedVersion = versionForm.Show();
-            Console.WriteLine(TextUtils.Format(selectedVersion.ToString(), TextColor.MAGENTA, TextColor.BLACK, TextFormat.BOLD, TextFormat.UNDERLINE));
+
+            var languages = Language.GetLanguages(selectedVersion.UUID);
+            languages.Wait();
+
+            foreach (var language in languages.Result)
+            {
+                Console.WriteLine($"{language}");
+            }
         }
     }
 }

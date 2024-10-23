@@ -9,6 +9,7 @@ namespace Customizable_Windows.CLI
 {
     public enum TextColor
     {
+        DEFAULT = 0,
         BLACK = 30,
         GREEN = 32,
         YELLOW = 33,
