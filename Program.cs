@@ -33,7 +33,7 @@ namespace Customizable_Windows
     {
         static void Main(string[] args)
         {
-            Console.WriteLine(TextUtils.Format("Welcome to Windows Customizer v1.0a", TextColor.WHITE, TextColor.BLACK, TextFormat.BOLD, TextFormat.UNDERLINE));
+            Console.WriteLine(TextUtils.Format("Welcome to Windows Customizer v1.0a", TextColor.WHITE, TextColor.BLUE, TextFormat.BOLD));
             Thread.Sleep(3000);
             Console.Clear();
 
@@ -43,10 +43,7 @@ namespace Customizable_Windows
             var languages = Language.GetLanguages(selectedVersion.UUID);
             languages.Wait();
 
-            foreach (var language in languages.Result)
-            {
-                Console.WriteLine($"{language}");
-            }
+            TextUtils.PrintArraySplittedToColumns("Languages", languages.Result);
         }
     }
 }

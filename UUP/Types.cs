@@ -40,6 +40,8 @@ namespace Customizable_Windows.UUP
         public string ApiVersion { get; set; }
         [JsonProperty("langFancyNames")]
         public Dictionary<string, string> LangFancyNames { get; set; }
+        [JsonProperty("editionFancyNames")]
+        public Dictionary<string, string> EditionFancyNames { get; set; }
     }
 
     public class Language
@@ -62,7 +64,7 @@ namespace Customizable_Windows.UUP
                 List<Language> languages = new List<Language>();
                 foreach (var keypair in parsed.Response.LangFancyNames)
                 {
-                    languages.Add(new Language((string)keypair.Key, (string)keypair.Value));
+                    languages.Add(new Language(keypair.Value, keypair.Key));
                 }
 
                 return languages.ToArray();
@@ -73,6 +75,37 @@ namespace Customizable_Windows.UUP
         {
             return Name;
         }
+        public string Name { get; }
+        public string Code { get; }
+    }
+
+    public class Edition
+    {
+        public Edition(string name, string code)
+        {
+            Name = name;
+            Code = code;
+        }
+
+        public static async Task<Edition[]> GetEditions(string versionId, Language language)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                var response = await client.GetAsync($"{Constants.UUPDUMP_JSONAPI}/listeditions.php?id={versionId}&lang={language.Code}");
+                response.EnsureSuccessStatusCode();
+                string body = await response.Content.ReadAsStringAsync();
+
+                ApiResponse parsed = JsonConvert.DeserializeObject<ApiResponse>(body);
+                List<Edition> editions = new List<Edition>();
+                foreach (var keypair in parsed.Response.EditionFancyNames)
+                {
+                    editions.Add(new Edition(keypair.Key, keypair.Value));
+                }
+
+                return editions.ToArray();
+            }
+        }
+
         public string Name { get; }
         public string Code { get; }
     }
