@@ -5,6 +5,7 @@
 3. Applications selection
 4. Image buidling mechanism
 5. (optional) Graphical User Interface (GUI)
+6. Continuous Integration
 
 # Contributions
 As this software is open-source for everyone I invite anyone able to help to contribute to the project. Also a little expertise is needed since C# is not my "native language" I write in.
